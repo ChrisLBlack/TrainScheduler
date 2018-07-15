@@ -43,8 +43,12 @@ $(document).ready(function () {
         $('#freq-input').val("");
 ;
         var format = "HH:mm";
-        var now = moment(trainTime, format);
-        console.log(moment(now).format("HH:mm"));
+        var trainTimeMom = moment(trainTime, format);
+        var now = moment().format("HH:mm");
+        console.log(moment(trainTimeMom).format("HH:mm"));
+        console.log(now);
+        console.log(moment(trainTimeMom).diff(moment(), "minutes"));
+        
 
 
     });
