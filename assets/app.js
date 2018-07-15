@@ -16,6 +16,9 @@ $(document).ready(function (){
     var trainTime = 0;
     var freqTime = 0;
 
+    var now = moment().format("HH:MM");
+    console.log(now)
+
 
     $("#add-train-btn").on("click", function (event) {
         
@@ -38,13 +41,14 @@ $(document).ready(function (){
        $('#dest-input').val("");
        $('#train-time-input').val("");
        $('#freq-input').val("");
+   
 
     });
 
     firebase.database().ref().limitToLast(10).on("child_added", function(snapshot){
        
         $('tbody').append($(`<tr><td>${snapshot.val().name}</td><td>${snapshot.val().dest}</td>
-        <td>${snapshot.val().time}</td><td>${snapshot.val().freq}</td></tr>`));
+        <td>${snapshot.val().freq}</td><td>${snapshot.val().time}</td></tr>`));
         
         
     })
