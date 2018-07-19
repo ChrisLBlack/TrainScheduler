@@ -16,9 +16,6 @@ $(document).ready(function () {
     var trainTime = 0;
     var freqTime = 0;
 
-    var now = moment().format("HH:mm");
-    console.log(now)
-
 
     $("#add-train-btn").on("click", function (event) {
 
@@ -41,22 +38,24 @@ $(document).ready(function () {
         $('#dest-input').val("");
         $('#train-time-input').val("");
         $('#freq-input').val("");
-;
-        var format = "HH:mm";
-        var trainTimeMom = moment(trainTime, format);
-        var now = moment().format("HH:mm");
-        console.log(moment(trainTimeMom).format("HH:mm"));
-        console.log(now);
-        console.log(moment(trainTimeMom).diff(moment(), "minutes"));
-        
-
-
     });
 
     firebase.database().ref().limitToLast(10).on("child_added", function (snapshot) {
 
+      var newtrainTime = snapshot.val().time;
+      var newfreqTime = snapshot.val().freq;
+
+        var format = "HH:mm";
+        var trainTimeMom = moment(newtrainTime, format);
+
+        var diffInTime = moment().diff(moment(trainTimeMom), 'minutes');
+        var timeLeft = diffInTime % newfreqTime;
+        var minTilTrain = newfreqTime - timeLeft;
+        var trainWhen = moment().add(minTilTrain, 'minutes').format("HH:mm");
+    
+
         $('tbody').append($(`<tr><td>${snapshot.val().name}</td><td>${snapshot.val().dest}</td>
-        <td>${snapshot.val().freq}</td><td>${snapshot.val().time}</td></tr>`));
+        <td>${snapshot.val().freq}</td><td>${trainWhen}</td><td>${minTilTrain}</tr>`));
 
 
     })
